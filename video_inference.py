@@ -244,8 +244,8 @@ def main():
     video_loader = MultithreadVideoLoader(video_path,max_height=1024)
     video_writer = MultithreadVideoWriter(outvid='result.mp4',fps=video_loader.get_fps())
     for i in range(len(video_loader)):
-        if i>10:
-            break
+        #if i>10:
+        #    break
         frame = video_loader.cap()
         rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         person_image=Image.fromarray(rgb_image)
