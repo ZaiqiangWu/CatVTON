@@ -362,7 +362,7 @@ def app_gradio():
     demo.queue().launch(share=True, show_error=True)
 
 def main():
-    person_image='./resource/demo/example/person/men/Simon_01.png'
+    person_image='./resource/demo/example/person/men/Simon_1.png'
     cloth_image='./resource/demo/example/condition/upper/24083449_54173465_2048.jpg'
     cloth_type="upper"#["upper", "lower", "overall"]
     num_inference_steps=50
