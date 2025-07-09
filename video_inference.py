@@ -2,18 +2,19 @@ import argparse
 import os
 from datetime import datetime
 
-import gradio as gr
+
 import numpy as np
 import torch
 from diffusers.image_processor import VaeImageProcessor
 from huggingface_hub import snapshot_download
 from PIL import Image
+import cv2
 
 from model.cloth_masker import AutoMasker, vis_mask
 from model.pipeline import CatVTONPipeline
 from utils import init_weight_dtype, resize_and_crop, resize_and_padding
-from util.multithread_video_loader import MultiThreadVideoLoader
-from util.multithread_video_writer import MultiThreadVideoWriter
+from util.multithread_video_loader import MultithreadVideoLoader
+from util.multithread_video_writer import MultithreadVideoWriter
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Simple example of a training script.")
@@ -142,8 +143,8 @@ def submit_function(
     if seed != -1:
         generator = torch.Generator(device='cuda').manual_seed(seed)
 
-    person_image = Image.open(person_image).convert("RGB")
-    cloth_image = Image.open(cloth_image).convert("RGB")
+    #person_image = Image.open(person_image).convert("RGB")
+    #cloth_image = Image.open(cloth_image).convert("RGB")
     person_image = resize_and_crop(person_image, (args.width, args.height))
     cloth_image = resize_and_padding(cloth_image, (args.width, args.height))
     
@@ -230,17 +231,29 @@ HEADER = """
 
 
 def main():
-    person_image='./resource/demo/example/person/men/Simon_1.png'
     cloth_image='./garments/fullbody/han.jpg'
+    cloth_image = Image.open(cloth_image).convert("RGB")
     cloth_type="overall"#["upper", "lower", "overall"]
     num_inference_steps=50
     guidance_scale=2.5
     seed=42
     show_type = "result only"
-    reuslt = submit_function(person_image, cloth_image, cloth_type, num_inference_steps, guidance_scale, seed,show_type)
-    reuslt.save("output.jpg")
+    #reuslt.save("output.jpg")
 
-
+    video_path='./videos/jin_16_test.mp4'
+    video_loader = MultithreadVideoLoader(video_path,max_height=1024)
+    video_writer = MultithreadVideoWriter(outvid='result.mp4',fps=video_loader.get_fps())
+    for i in range(len(video_loader)):
+        if i>10:
+            break
+        frame = video_loader.cap()
+        rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        person_image=Image.fromarray(rgb_image)
+        result = submit_function(person_image, cloth_image, cloth_type, num_inference_steps, guidance_scale, seed,
+                                 show_type)
+        video_writer.append(np.array(result),isRGB=True)
+    video_writer.make_video()
+    video_writer.close()
 
 
 if __name__ == "__main__":
