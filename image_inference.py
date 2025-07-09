@@ -363,8 +363,8 @@ def app_gradio():
 
 def main():
     person_image='./resource/demo/example/person/men/Simon_1.png'
-    cloth_image='./resource/demo/example/condition/upper/24083449_54173465_2048.jpg'
-    cloth_type="upper"#["upper", "lower", "overall"]
+    cloth_image='./garments/fullbody/han.jpg'
+    cloth_type="overall"#["upper", "lower", "overall"]
     num_inference_steps=50
     guidance_scale=2.5
     seed=42
