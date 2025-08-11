@@ -233,7 +233,7 @@ HEADER = """
 def main():
     #cloth_image='./garments/fullbody/han.jpg'
     cloth_image = './resource/demo/example/condition/overall/24047235_54199143_1000.jpg'
-    cloth_image = './garments/fullbody/coat.jpg'
+    cloth_image = './garments/fullbody/han.jpg'
     cloth_image = Image.open(cloth_image).convert("RGB")
     cloth_type="overall"#["upper", "lower", "overall"]
     num_inference_steps=50
