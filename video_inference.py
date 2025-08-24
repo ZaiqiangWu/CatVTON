@@ -230,10 +230,11 @@ HEADER = """
 """
 
 
-def main():
+def main(cloth_image):
     #cloth_image='./garments/fullbody/han.jpg'
-    cloth_image = './resource/demo/example/condition/overall/24047235_54199143_1000.jpg'
-    cloth_image = './garments/fullbody/han.jpg'
+    #cloth_image = './resource/demo/example/condition/overall/24047235_54199143_1000.jpg'
+    #cloth_image = './garments/fullbody/han.jpg'
+    cloth_name = os.path.basename(cloth_image).split('.')[0]
     cloth_image = Image.open(cloth_image).convert("RGB")
     cloth_type="overall"#["upper", "lower", "overall"]
     num_inference_steps=50
@@ -243,8 +244,9 @@ def main():
     #reuslt.save("output.jpg")
 
     video_path='./videos/jin_16_test.mp4'
+    video_name = os.path.basename(video_path).split('.')[0]
     video_loader = MultithreadVideoLoader(video_path,max_height=1024)
-    video_writer = MultithreadVideoWriter(outvid='result.mp4',fps=video_loader.get_fps())
+    video_writer = MultithreadVideoWriter(outvid=cloth_name+'_'+video_name+'.mp4',fps=video_loader.get_fps())
     for i in range(len(video_loader)):
         #if i>10:
         #   break
@@ -259,4 +261,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    cloth_images = ['./garments/fullbody/han.jpg','./garments/fullbody/dress.jpg','./garments/fullbody/korean.jpg','./garments/fullbody/coat.jpg']
+    for cloth_image in cloth_images:
+        main(cloth_image)
