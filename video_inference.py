@@ -243,7 +243,7 @@ def main(cloth_image):
     show_type = "result only"
     #reuslt.save("output.jpg")
 
-    video_path='./videos/jin_16_test.mp4'
+    video_path='./videos/jin_16_train.mp4'
     video_name = os.path.basename(video_path).split('.')[0]
     video_loader = MultithreadVideoLoader(video_path,max_height=1024)
     video_writer = MultithreadVideoWriter(outvid=cloth_name+'_'+video_name+'.mp4',fps=video_loader.get_fps())
