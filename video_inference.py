@@ -262,5 +262,6 @@ def main(cloth_image):
 
 if __name__ == "__main__":
     cloth_images = ['./garments/fullbody/han.jpg','./garments/fullbody/dress.jpg','./garments/fullbody/korean.jpg','./garments/fullbody/coat.jpg']
+    cloth_images.reverse()
     for cloth_image in cloth_images:
         main(cloth_image)
